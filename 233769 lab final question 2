@@ -1,0 +1,239 @@
+@page "/quiz"
+@using BlazorQuizApp.Models
+
+<h1>Quiz</h1>
+
+<QuestionList Questions="@questions" />
+
+<button @onclick="SubmitQuiz">Submit</button>
+
+@if (resultMessage != null)
+{
+    <p>@resultMessage</p>
+}
+
+@code {
+    private List<Question> questions = new List<Question>
+    {
+        new Question
+        {
+            Text = "What is the capital of France?",
+            Options = new List<string> { "Berlin", "Madrid", "Paris", "Rome" },
+            CorrectAnswer = "Paris"
+        },
+        new Question
+        {
+            Text = "What is 2 + 2?",
+            Options = new List<string> { "3", "4", "5", "6" },
+            CorrectAnswer = "4"
+        }
+    };
+
+    private string resultMessage;
+
+    private void SubmitQuiz()
+    {
+        int score = 0;
+        foreach (var question in questions)
+        {
+            if (selectedAnswers.TryGetValue(questions.IndexOf(question), out var selectedAnswer) &&
+                selectedAnswer == question.CorrectAnswer)
+            {
+                score++;
+            }
+        }
+        resultMessage = $"You scored {score} out of {questions.Count}.";
+    }
+
+    private Dictionary<int, string> selectedAnswers = new Dictionary<int, string>();
+}
+@using BlazorQuizApp.Models
+
+<div class="question-card">
+    <h3>@Question.Text</h3>
+    @foreach (var option in Question.Options)
+    {
+        <div>
+            <input type="radio" name="options" value="@option" @onchange="() => OnOptionSelected(option)" />
+            <label>@option</label>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Question Question { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnOptionSelected { get; set; }
+}
+
+@using BlazorQuizApp.Models
+
+<div class="question-card">
+    <h3>@Question.Text</h3>
+    @foreach (var option in Question.Options)
+    {
+        <div>
+            <input type="radio" name="options" value="@option" @onchange="() => OnOptionSelected(option)" />
+            <label>@option</label>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Question Question { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnOptionSelected { get; set; }
+}
+
+@using BlazorQuizApp.Models
+
+<div class="question-card">
+    <h3>@Question.Text</h3>
+    @foreach (var option in Question.Options)
+    {
+        <div>
+            <input type="radio" name="options" value="@option" @onchange="() => OnOptionSelected(option)" />
+            <label>@option</label>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Question Question { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnOptionSelected { get; set; }
+}
+
+@using BlazorQuizApp.Models
+
+<div class="question-card">
+    <h3>@Question.Text</h3>
+    @foreach (var option in Question.Options)
+    {
+        <div>
+            <input type="radio" name="options" value="@option" @onchange="() => OnOptionSelected(option)" />
+            <label>@option</label>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Question Question { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnOptionSelected { get; set; }
+}
+
+@using BlazorQuizApp.Models
+
+<div class="question-card">
+    <h3>@Question.Text</h3>
+    @foreach (var option in Question.Options)
+    {
+        <div>
+            <input type="radio" name="options" value="@option" @onchange="() => OnOptionSelected(option)" />
+            <label>@option</label>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Question Question { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnOptionSelected { get; set; }
+}
+
+@using BlazorQuizApp.Models
+
+<div class="question-card">
+    <h3>@Question.Text</h3>
+    @foreach (var option in Question.Options)
+    {
+        <div>
+            <input type="radio" name="options" value="@option" @onchange="() => OnOptionSelected(option)" />
+            <label>@option</label>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Question Question { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnOptionSelected { get; set; }
+@using BlazorQuizApp.Models
+
+<div class="question-card">
+    <h3>@Question.Text</h3>
+    @foreach (var option in Question.Options)
+    {
+        <div>
+            <input type="radio" name="options" value="@option" @onchange="() => OnOptionSelected(option)" />
+            <label>@option</label>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Question Question { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnOptionSelected { get; set; }
+}
+}
+@using BlazorQuizApp.Models
+
+<div class="question-card">
+    <h3>@Question.Text</h3>
+    @foreach (var option in Question.Options)
+    {
+        <div>
+            <input type="radio" name="options" value="@option" @onchange="() => OnOptionSelected(option)" />
+            <label>@option</label>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Question Question { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnOptionSelected { get; set; }
+}
+
+@using BlazorQuizApp.Models
+
+<div class="question-list">
+    @foreach (var question in Questions)
+    {
+        <QuestionCard Question="@question" OnOptionSelected="HandleOptionSelected" />
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<Question> Questions { get; set; }
+
+    private Dictionary<int, string> selectedAnswers = new Dictionary<int, string>();
+
+    private void HandleOptionSelected(string selectedOption)
+    {
+        var questionIndex = Questions.FindIndex(q => q.Options.Contains(selectedOption));
+        if (questionIndex >= 0)
+        {
+            selectedAnswers[questionIndex] = selectedOption;
+        }
+    }
+}
