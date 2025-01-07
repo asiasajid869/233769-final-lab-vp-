@@ -1,0 +1,153 @@
+<Window x:Class="quiz_app.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Quiz Application" Height="450" Width="800">
+    <Grid>
+        <ComboBox x:Name="TopicComboBox" Width="200" Margin="10" SelectionChanged="ComboBox_SelectionChanged">
+            <ComboBoxItem Content="All Topics"/>
+            <ComboBoxItem Content="Math"/>
+            <ComboBoxItem Content="Science"/>
+            <ComboBoxItem Content="History"/>
+        </ComboBox>
+
+        <DataGrid x:Name="QuestionsDataGrid" AutoGenerateColumns="False" Margin="10,50,10,10" SelectionChanged="DataGrid_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Question Text" Binding="{Binding QuestionText}"/>
+                <DataGridTextColumn Header="Options" Binding="{Binding Options}"/>
+                <DataGridTextColumn Header="Correct Answer" Binding="{Binding CorrectAnswer}"/>
+                <DataGridTextColumn Header="Assigned Marks" Binding="{Binding AssignedMarks}"/>
+                <DataGridTextColumn Header="Time Limit" Binding="{Binding TimeLimit}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">
+            <Button Content="Add Question" Click="AddQuestion_Click"/>
+            <Button Content="Edit Question" Click="EditQuestion_Click"/>
+            <Button Content="Delete Question" Click="DeleteQuestion_Click"/>
+            <Button Content="Save Changes" Click="SaveChanges_Click"/>
+        </StackPanel>
+
+        <ProgressBar x:Name="LoadingProgressBar" Height="20" Margin="10" Visibility="Collapsed"/>
+    </Grid>
+</Window>
+main .
+
+using System;
+using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
+
+namespace quiz_app
+{
+    public partial class MainWindow : Window
+    {
+        public ObservableCollection<Question> Questions { get; set; }
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            Questions = new ObservableCollection<Question>();
+            QuestionsDataGrid.ItemsSource = Questions;
+
+            // Sample data
+            Questions.Add(new Question { QuestionText = "What is 2 + 2?", Options = "1. 3; 2. 4; 3. 5", CorrectAnswer = "2. 4", AssignedMarks = 1, TimeLimit = 30 });
+            Questions.Add(new Question { QuestionText = "What is the capital of France?", Options = "1. Berlin; 2. Madrid; 3. Paris", CorrectAnswer = "3. Paris", AssignedMarks = 1, TimeLimit = 30 });
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Handle selection change if needed
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Filter questions based on selected topic
+            string selectedTopic = (TopicComboBox.SelectedItem as ComboBoxItem)?.Content.ToString();
+            if (selectedTopic == "All Topics")
+            {
+                QuestionsDataGrid.ItemsSource = Questions;
+            }
+            else
+            {
+                // Implement filtering logic based on the selected topic
+                // For now, just show all questions
+                QuestionsDataGrid.ItemsSource = Questions; // Replace with actual filtering logic
+            }
+        }
+
+        private void AddQuestion_Click(object sender, RoutedEventArgs e)
+        {
+            // Logic to add a new question
+            // Open a modal dialog to get question details
+            var newQuestion = new Question
+            {
+                QuestionText = "New Question?",
+                Options = "1. Option1; 2. Option2; 3. Option3",
+                CorrectAnswer = "1. Option1",
+                AssignedMarks = 1,
+                TimeLimit = 30
+            };
+            Questions.Add(newQuestion);
+            MessageBox.Show("Question added successfully.");
+        }
+
+        private void EditQuestion_Click(object sender, RoutedEventArgs e)
+        {
+            // Logic to edit the selected question
+            if (QuestionsDataGrid.SelectedItem is Question selectedQuestion)
+            {
+                // Open a modal dialog to edit question details
+                selectedQuestion.QuestionText = "Edited Question?";
+                selectedQuestion.Options = "1. NewOption1; 2. NewOption2; 3. NewOption3";
+                selectedQuestion.CorrectAnswer = "2. NewOption2";
+                MessageBox.Show("Question edited successfully.");
+            }
+            else
+            {
+                MessageBox.Show("Please select a question to edit.");
+            }
+        }
+
+        private void DeleteQuestion_Click(object sender, RoutedEventArgs e)
+        {
+            // Logic to delete the selected question
+            if (QuestionsDataGrid.SelectedItem is Question selectedQuestion)
+            {
+                Questions.Remove(selectedQuestion);
+                MessageBox.Show("Question deleted successfully.");
+            }
+            else
+            {
+                MessageBox.Show("Please select a question to delete.");
+            }
+        }
+
+        private void SaveChanges_Click(object sender, RoutedEventArgs e)
+        {
+            // Logic to save changes to the database
+            MessageBox.Show("Save Changes functionality not implemented.");
+        }
+    }
+
+    public class Question
+    {
+        public string QuestionText { get; set; }
+        public string Options { get; set; }
+        public string CorrectAnswer { get; set; }
+        public int AssignedMarks { get; set; }
+        public int TimeLimit { get; set; }
+    }
+}
+project database connect code app .config
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<connectionStrings>
+		<add name="QuizAppDB"
+             connectionString="Server=YOUR_SERVER_NAME;Database=quiz_app;Trusted_Connection=True;"
+             providerName="System.Data.SqlClient" />
+	</connectionStrings>
+	<startup>
+		<supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.7.2" />
+	</startup>
+</configuration>
+
